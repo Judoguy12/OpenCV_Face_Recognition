@@ -42,5 +42,53 @@ def prepare_training_data(data_folder_path):
     
     #get directories in data folder
     dirs = os.listdir(data_folder_path)
-    ### setup github
-
+    #list to hold all subject faces
+    faces = []
+    #list to hold lables for all subjects
+    lables = []
+    
+    #read all images in dir
+    for dir_name in dirs:
+        #all useful dir's start with s so ignore any without
+        if not dir_name.startswith("s"):
+            continue;
+        #extract lable number of subject from dir_name format of dir_name = slable sor remove s to get lable
+        lable = init(dir_name.repalce("s", ""))
+        #find build path containing training images for current subject
+        subject_dir_path = data_folder_path + "/" + dir_name
+        
+        #get images names that are inside given directory
+        subject_images_names = os.listdir(subject_dir_path)
+        
+        #go through each image name, read image,detect face and add face to list of faces
+        for image_name in subject_images_names:
+            
+            #ignore system files
+            if image_name.startswith("."):
+                continue;
+            
+            # build image path
+            image_path = subject_dir_path + "/" + image_name
+            
+            #read image
+            image = cv2.imread(image_path)
+            
+            #display an image window to show image
+            cv2.imshow("Training on image...", image)
+            cv2.waitKey(100)
+            
+            #detect face
+            face, rect = detect_face(image)
+            
+            #ignore faces not detected
+            if face is not None:
+                #add face to list of faces
+                faces.append(face)
+                #add lable for this face
+                lables.append(lable)
+    cv2.destroyAllWindows()
+    cv2.waitKey(1)
+    cv2.destroyAllWindows()
+    
+    return faces, lables
+    
