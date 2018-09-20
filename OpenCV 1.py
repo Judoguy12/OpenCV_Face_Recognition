@@ -91,4 +91,13 @@ def prepare_training_data(data_folder_path):
     cv2.destroyAllWindows()
     
     return faces, lables
-    
+#prep training data
+print("Preparing Data")
+faces, lables = prepare_training_data("training-data")
+print("Data prepared")
+
+#print total faces and lables
+print("Total faces: ", len(faces))
+print("Total lables: ", len(lables))
+
+
